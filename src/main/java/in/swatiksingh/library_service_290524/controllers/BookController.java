@@ -35,4 +35,23 @@ public class BookController {
     public void deleteBook(@PathVariable Long id) {
         bookService.deleteById(id);
     }
+    @PostMapping("/{bookId}/borrow/{userId}")
+    public ResponseEntity<Book> borrowBook(@PathVariable Long bookId, @PathVariable Long userId) {
+        Book borrowedBook = bookService.borrowBook(bookId, userId);
+        if (borrowedBook != null) {
+            return ResponseEntity.ok(borrowedBook);
+        } else {
+            return ResponseEntity.badRequest().build(); // or a more descriptive error response
+        }
+    }
+
+    @PostMapping("/{bookId}/return")
+    public ResponseEntity<Book> returnBook(@PathVariable Long bookId) {
+        Book returnedBook = bookService.returnBook(bookId);
+        if (returnedBook != null) {
+            return ResponseEntity.ok(returnedBook);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
 }
